@@ -19,18 +19,20 @@ public class SocialProfile {
         Both entities know of the relationship but SocialUser is the owner
         Relationship managed by user table. Don't create join column here
      */
-    @OneToOne(mappedBy = "socialProfile")
+    @OneToOne
     @JsonIgnore //Avoids circular referencing.
+    @JoinColumn(name="social_user")
     private SocialUser socialUser;
 
+    private String description;
     /**
      * Ensures consistency between social user and social profile
      * @param socialUser
      */
     public void setSocialUser(SocialUser socialUser) {
         this.socialUser = socialUser;
-        if(socialUser.getSocialProfile()!=this && socialUser.getSocialProfile()!=null){
-            socialUser.setSocialProfile(this);
+        if(this.socialUser.getSocialProfile()!=this && this.socialUser.getSocialProfile()!=null){
+            this.socialUser.setSocialProfile(this);
         }
     }
 }

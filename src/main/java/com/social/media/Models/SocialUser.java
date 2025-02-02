@@ -16,14 +16,15 @@ public class SocialUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "social_profile_id")
+//    @OneToOne(mappedBy = "socialUser", cascade = {CascadeType.REMOVE,CascadeType.PERSIST, CascadeType.MERGE} )
+    @OneToOne(mappedBy = "socialUser", cascade = CascadeType.ALL)
+    //    @JoinColumn(name = "social_profile_id")
     private SocialProfile socialProfile;
 
-    @OneToMany(mappedBy = "socialUser")
+    @OneToMany(mappedBy = "socialUser", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER) //Lazy by default
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -46,5 +47,4 @@ public class SocialUser {
         socialProfile.setSocialUser(this);
         this.socialProfile = socialProfile;
     }
-
 }
